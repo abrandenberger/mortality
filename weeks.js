@@ -90,10 +90,10 @@ if (typeof browser === "undefined") {
   };
 }
 
-window.onload = () => {
+window.addEventListener("DOMContentLoaded", function () {
   console.log("hey test if this runs");
   document.getElementById("body").style.opacity = 1;
-};
+});
 
 const savedBirthdate = localStorage.getItem("birthDate");
 
