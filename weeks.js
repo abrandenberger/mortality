@@ -23,7 +23,6 @@ const generateWeeks = (birthDate) => {
   }
 
   const weeksAlive = calculateWeeksAlive(birthDate);
-  console.log(window.weeksLifespan - weeksAlive);
 
   if (weeksAlive) {
     sundaysLeft = document.getElementById("sundays-left");
@@ -92,6 +91,7 @@ if (typeof browser === "undefined") {
 }
 
 window.onload = () => {
+  console.log("hey test if this runs");
   document.getElementById("body").style.opacity = 1;
 };
 
