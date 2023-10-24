@@ -91,7 +91,6 @@ if (typeof browser === "undefined") {
 }
 
 window.addEventListener("DOMContentLoaded", function () {
-  console.log("hey test if this runs");
   document.getElementById("body").style.opacity = 1;
 });
 
