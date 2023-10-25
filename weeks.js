@@ -1,7 +1,7 @@
 window.container = document.getElementById("weeks");
 window.currentDate = new Date();
 // window.weeksLifespan = 4693; // 90 years
-window.weeksLifespan = 4172; // 80 years
+window.weeksLifespan = 4171; // 80 years
 window.dateInput = document.getElementById("dob");
 
 const calculateWeeksAlive = (birthDate) => {
@@ -25,10 +25,8 @@ const generateWeeks = (birthDate) => {
   const weeksAlive = calculateWeeksAlive(birthDate);
 
   if (weeksAlive) {
-    sundaysLeft = document.getElementById("sundays-left");
-    sundaysLeft.innerHTML = `anna, you have ${
-      window.weeksLifespan - weeksAlive
-    } sundays left`;
+    sundaysLeft = document.getElementById("sundays-left-count");
+    sundaysLeft.innerHTML = `${window.weeksLifespan - weeksAlive}`;
     // window.container.appendChild(sundaysLeft);
   }
 
@@ -94,12 +92,75 @@ window.addEventListener("DOMContentLoaded", function () {
   document.getElementById("body").style.opacity = 1;
 });
 
+// deal with saved birthdate
 const savedBirthdate = localStorage.getItem("birthDate");
-
 if (savedBirthdate) {
   const birthDate = new Date(savedBirthdate);
   dateInput.value = birthDate.toISOString().slice(0, 10);
   generateWeeks(birthDate);
 } else {
   generateWeeks(new Date());
+}
+
+// deal with editing the name
+const editableName = document.getElementById("editable-name");
+editableName.addEventListener("click", () => {
+  editableName.contentEditable = "true";
+  editableName.focus();
+});
+function saveName() {
+  // save to local storage when click out / enter
+  const editedName = editableName.textContent.trim();
+  localStorage.setItem("userName", editedName);
+  editableName.blur(); // Remove focus to save the name and make it non-editable
+}
+editableName.addEventListener("blur", saveName);
+editableName.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault(); // Prevent line break
+    saveName();
+  }
+});
+const savedName = localStorage.getItem("userName");
+if (savedName) {
+  editableName.textContent = savedName;
+}
+
+// deal with editing the years
+const editableYears = document.getElementById("editable-years");
+editableYears.addEventListener("click", () => {
+  // Make the years editable when clicked
+  editableYears.contentEditable = "true";
+  editableYears.focus();
+});
+function saveYears() {
+  const editedYears = parseInt(editableYears.textContent.trim());
+  if (editedYears > 40 && editedYears < 120) {
+    localStorage.setItem("userYears", editedYears);
+    editableYears.blur();
+    window.weeksLifespan = Math.round(editedYears * 52.143); // Update weeksLifespan based on edited years
+    // Re-generate weeks with the new lifespan
+    regenerateWeeks();
+  }
+}
+function regenerateWeeks() {
+  if (savedBirthdate) {
+    const birthDate = new Date(savedBirthdate);
+    generateWeeks(birthDate);
+  } else {
+    generateWeeks(new Date());
+  }
+}
+editableYears.addEventListener("blur", saveYears);
+editableYears.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault(); // Prevent line break
+    saveYears();
+  }
+});
+const savedYears = localStorage.getItem("userYears");
+if (savedYears) {
+  editableYears.textContent = savedYears;
+  window.weeksLifespan = Math.round(savedYears * 52.143);
+  regenerateWeeks();
 }

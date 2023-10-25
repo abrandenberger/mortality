@@ -10,10 +10,16 @@
       <label for="dob">Date of birth</label>
       <input type="date" name="dob" id="dob" />
     </div>
-    <h3 id="sundays-left"></h3>
+    <h3 id="sundays-left">
+      <span id="editable-name" spellcheck="false" contenteditable="true"
+        >anna</span
+      >, you have <span id="sundays-left-count"></span> sundays left
+    </h3>
     <ul class="weeks" id="weeks"></ul>
     <h3 id="description">
-      each circle represents one week out of 80 years. spend your time wisely.
+      each circle represents one week out of
+      <span id="editable-years" contenteditable="true">80</span> years. spend
+      your time wisely.
     </h3>
   </body>
 </html>
